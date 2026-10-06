@@ -27,7 +27,7 @@ export default function Admin() {
   const [inquiriesError, setInquiriesError] = useState("");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/inquiries`)
+    fetch("/admin-api/inquiries")
       .then((response) => response.json())
       .then((data) => {
         setInquiries(data);
@@ -119,7 +119,7 @@ export default function Admin() {
       let response;
 
       if (editingCar) {
-        response = await fetch(`${API_URL}/api/cars/${editingCar.id}`, {
+        response = await fetch(`/admin-api/cars/${editingCar.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -127,7 +127,7 @@ export default function Admin() {
           body: JSON.stringify(formattedCar),
         });
       } else {
-        response = await fetch(`${API_URL}/api/cars`, {
+        response = await fetch("/admin-api/cars", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -217,7 +217,7 @@ export default function Admin() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/cars/${id}`, {
+      const response = await fetch(`/admin-api/cars/${id}`, {
         method: "DELETE",
       });
 
@@ -239,7 +239,7 @@ export default function Admin() {
     const newStatus = car.status === "Available" ? "Sold" : "Available";
 
     try {
-      const response = await fetch(`${API_URL}/api/cars/${id}/status`, {
+      const response = await fetch(`/admin-api/cars/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -296,7 +296,7 @@ export default function Admin() {
     const newStatus = inquiry.status === "New" ? "Contacted" : "New";
 
     try {
-      const response = await fetch(`${API_URL}/api/inquiries/${id}/status`, {
+      const response = await fetch(`/admin-api/inquiries/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

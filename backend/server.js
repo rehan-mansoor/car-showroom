@@ -6,6 +6,17 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+const adminAuth = (req, res, next) => {
+  const token = req.headers["x-admin-token"];
+
+  if (!token || token !== process.env.ADMIN_API_TOKEN) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
+  next();
+};
 
 app.get("/", (req, res) => {
   res.send("Car Showroom Backend is running");
@@ -82,7 +93,7 @@ app.post("/api/inquiries", (req, res) => {
   });
 });
 
-app.get("/api/inquiries", (req, res) => {
+app.get("/api/inquiries", adminAuth, (req, res) => {
   const sql = `
     SELECT
       inquiries.id,
@@ -111,7 +122,7 @@ app.get("/api/inquiries", (req, res) => {
   });
 });
 
-app.patch("/api/inquiries/:id/status", (req, res) => {
+app.patch("/api/inquiries/:id/status", adminAuth, (req, res) => {
   const inquiryId = req.params.id;
   const { status } = req.body;
 
@@ -144,7 +155,7 @@ app.patch("/api/inquiries/:id/status", (req, res) => {
   });
 });
 
-app.post("/api/cars", (req, res) => {
+app.post("/api/cars", adminAuth, (req, res) => {
   const {
     brand,
     model,
@@ -229,8 +240,7 @@ app.post("/api/cars", (req, res) => {
     },
   );
 });
-
-app.put("/api/cars/:id", (req, res) => {
+app.put("/api/cars/:id", adminAuth, (req, res) => {
   const carId = req.params.id;
 
   const {
@@ -323,7 +333,7 @@ app.put("/api/cars/:id", (req, res) => {
   );
 });
 
-app.delete("/api/cars/:id", (req, res) => {
+app.delete("/api/cars/:id", adminAuth, (req, res) => {
   const carId = req.params.id;
 
   const sql = "DELETE FROM cars WHERE id = ?";
@@ -349,7 +359,7 @@ app.delete("/api/cars/:id", (req, res) => {
   });
 });
 
-app.patch("/api/cars/:id/status", (req, res) => {
+app.patch("/api/cars/:id/status", adminAuth, (req, res) => {
   const carId = req.params.id;
   const { status } = req.body;
 
