@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = "https://car-showroom-backend-eight.vercel.app";
 
 export default function Admin() {
   const [cars, setCars] = useState([]);
