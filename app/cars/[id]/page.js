@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function CarDetails({ params }) {
   const { id } = use(params);
@@ -21,7 +22,7 @@ export default function CarDetails({ params }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/cars/${id}`)
+    fetch(`${API_URL}/api/cars/${id}`)
       .then((response) => {
         if (response.status === 404) {
           throw new Error("Car not found");
@@ -68,7 +69,7 @@ export default function CarDetails({ params }) {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/inquiries", {
+      const response = await fetch(`${API_URL}/api/inquiries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

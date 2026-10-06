@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function Cars() {
   const [cars, setCars] = useState([]);
@@ -11,7 +12,7 @@ export default function Cars() {
   const [priceRange, setPriceRange] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/cars")
+    fetch(`${API_URL}/api/cars`)
       .then((response) => response.json())
       .then((data) => {
         setCars(data);
