@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 export function proxy(request) {
-  const pathname = request.nextUrl.pathname;
   const authHeader = request.headers.get("authorization");
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
@@ -32,18 +31,20 @@ export function proxy(request) {
     });
   }
 
-  if (pathname.startsWith("/admin-api/")) {
+  if (request.nextUrl.pathname.startsWith("/admin-api/")) {
     const headers = new Headers(request.headers);
 
     headers.set("x-admin-token", process.env.ADMIN_API_TOKEN);
 
     headers.delete("authorization");
 
-    const backendPath = pathname.replace(/^\/admin-api/, "/api");
-
-    const backendUrl = new URL(backendPath, process.env.NEXT_PUBLIC_API_URL);
-
-    backendUrl.search = request.nextUrl.search;
+    const backendUrl = new URL(
+      `${request.nextUrl.pathname.replace(
+        "/admin-api",
+        "/api",
+      )}${request.nextUrl.search}`,
+      process.env.NEXT_PUBLIC_API_URL,
+    );
 
     return NextResponse.rewrite(backendUrl, {
       request: {
@@ -56,5 +57,5 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*", "/admin-api/:path*"],
+  matcher: ["/admin/:path*", "/admin-api/:path*"],
 };
