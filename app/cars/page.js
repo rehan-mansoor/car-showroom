@@ -12,7 +12,7 @@ export default function Cars() {
   const [priceRange, setPriceRange] = useState("");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/cars`)
+    fetch("/api/cars")
       .then((response) => response.json())
       .then((data) => {
         setCars(data);
