@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 const API_URL = "https://car-showroom-backend-eight.vercel.app";
 
 export default function Cars() {
@@ -12,8 +13,14 @@ export default function Cars() {
   const [priceRange, setPriceRange] = useState("");
 
   useEffect(() => {
-    fetch("/api/cars")
-      .then((response) => response.json())
+    fetch(`${API_URL}/api/cars`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Unable to load cars");
+        }
+
+        return response.json();
+      })
       .then((data) => {
         setCars(data);
         setLoading(false);
@@ -106,7 +113,9 @@ export default function Cars() {
                 </h3>
 
                 <p>Year: {car.year}</p>
+
                 <p>Mileage: {car.mileage.toLocaleString()} mi</p>
+
                 <h4>${car.price.toLocaleString()}</h4>
 
                 <a href={`/cars/${car.id}`} className="details-button">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 const API_URL = "https://car-showroom-backend-eight.vercel.app";
 
 export default function Admin() {
@@ -27,7 +28,7 @@ export default function Admin() {
   const [inquiriesError, setInquiriesError] = useState("");
 
   useEffect(() => {
-    fetch("/admin-api/inquiries")
+    fetch(`${API_URL}/api/inquiries`)
       .then((response) => response.json())
       .then((data) => {
         setInquiries(data);
@@ -119,7 +120,7 @@ export default function Admin() {
       let response;
 
       if (editingCar) {
-        response = await fetch(`/admin-api/cars/${editingCar.id}`, {
+        response = await fetch(`${API_URL}/api/cars/${editingCar.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -127,7 +128,7 @@ export default function Admin() {
           body: JSON.stringify(formattedCar),
         });
       } else {
-        response = await fetch("/admin-api/cars", {
+        response = await fetch(`${API_URL}/api/cars`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -217,7 +218,7 @@ export default function Admin() {
     }
 
     try {
-      const response = await fetch(`/admin-api/cars/${id}`, {
+      const response = await fetch(`${API_URL}/api/cars/${id}`, {
         method: "DELETE",
       });
 
@@ -239,7 +240,7 @@ export default function Admin() {
     const newStatus = car.status === "Available" ? "Sold" : "Available";
 
     try {
-      const response = await fetch(`/admin-api/cars/${id}/status`, {
+      const response = await fetch(`${API_URL}/api/cars/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -296,7 +297,7 @@ export default function Admin() {
     const newStatus = inquiry.status === "New" ? "Contacted" : "New";
 
     try {
-      const response = await fetch(`/admin-api/inquiries/${id}/status`, {
+      const response = await fetch(`${API_URL}/api/inquiries/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
